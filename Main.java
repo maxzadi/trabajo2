@@ -66,15 +66,31 @@ public class Main {
         int[] capacidades = new int[4];
         int[] costos = new int[4];
 
-        for (int i = 1; i <= 4; i++) {
-            JTextField tipoField = new JTextField();
+        for (int i = 1; i <= 1; i++) {
+            JRadioButton futBtn = new JRadioButton("Fútbol");
+            JRadioButton basquetBtn = new JRadioButton("Baloncesto");
+            JRadioButton tenisBtn = new JRadioButton("Tenis");
+
+            ButtonGroup grupoTipo = new ButtonGroup();
+            grupoTipo.add(futBtn);
+            grupoTipo.add(basquetBtn);
+            grupoTipo.add(tenisBtn);
+
+            futBtn.setSelected(true);
+
             JTextField numeroField = new JTextField();
             JTextField capacidadField = new JTextField();
             JTextField costoField = new JTextField();
 
             JPanel panel = new JPanel(new GridLayout(4, 2, 5, 5));
             panel.add(new JLabel("Tipo:"));
-            panel.add(tipoField);
+
+            JPanel tipoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+            tipoPanel.add(futBtn);
+            tipoPanel.add(basquetBtn);
+            tipoPanel.add(tenisBtn);
+
+            panel.add(tipoPanel);
             panel.add(new JLabel("Número:"));
             panel.add(numeroField);
             panel.add(new JLabel("Capacidad:"));
@@ -87,7 +103,10 @@ public class Main {
 
             if (result == JOptionPane.OK_OPTION) {
                 try {
-                    String tipo = tipoField.getText();
+                    String tipo = "";
+                    if (futBtn.isSelected()) tipo = "Fútbol";
+                    else if (basquetBtn.isSelected()) tipo = "Baloncesto";
+                    else if (tenisBtn.isSelected()) tipo = "Tenis";
                     Integer numero = Integer.parseInt(numeroField.getText());
                     Integer capacidad = Integer.parseInt(capacidadField.getText());
                     Integer costo = Integer.parseInt(costoField.getText());
@@ -112,21 +131,38 @@ public class Main {
         }
 
         controlador.agregarCancha(tipos[0],numeros.get(0),capacidades[0],costos[0]);
-        controlador.agregarCancha(tipos[1],numeros.get(1),capacidades[1],costos[1]);
-        controlador.agregarCancha(tipos[2],numeros.get(2),capacidades[2],costos[2]);
-        controlador.agregarCancha(tipos[3],numeros.get(3),capacidades[3],costos[3]);
+        //controlador.agregarCancha(tipos[1],numeros.get(1),capacidades[1],costos[1]);
+        //controlador.agregarCancha(tipos[2],numeros.get(2),capacidades[2],costos[2]);
+        //controlador.agregarCancha(tipos[3],numeros.get(3),capacidades[3],costos[3]);
     }
 
     public static void agregarCancha(){
         while(true){
-        JTextField tipoField = new JTextField();
+        JRadioButton futBtn = new JRadioButton("Fútbol");
+        JRadioButton basquetBtn = new JRadioButton("Baloncesto");
+        JRadioButton tenisBtn = new JRadioButton("Tenis");
+
+        ButtonGroup grupoTipo = new ButtonGroup();
+        grupoTipo.add(futBtn);
+        grupoTipo.add(basquetBtn);
+        grupoTipo.add(tenisBtn);
+
+        futBtn.setSelected(true);
+
         JTextField numeroField = new JTextField();
         JTextField capacidadField = new JTextField();
         JTextField costoField = new JTextField();
 
-        JPanel panel = new JPanel(new GridLayout(4, 2, 5, 5));
+        JPanel panel = new JPanel(new GridLayout(5, 2, 5, 5));
         panel.add(new JLabel("Tipo:"));
-        panel.add(tipoField);
+
+        JPanel tipoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        tipoPanel.add(futBtn);
+        tipoPanel.add(basquetBtn);
+        tipoPanel.add(tenisBtn);
+
+        panel.add(tipoPanel);
+
         panel.add(new JLabel("Número:"));
         panel.add(numeroField);
         panel.add(new JLabel("Capacidad:"));
@@ -135,24 +171,26 @@ public class Main {
         panel.add(costoField);
 
         int result = JOptionPane.showConfirmDialog(null, panel,
-                "Cancha ", JOptionPane.OK_CANCEL_OPTION);
+                "Agregar Cancha", JOptionPane.OK_CANCEL_OPTION);
+
         if (result == JOptionPane.OK_OPTION) {
             try {
-                String tipo = tipoField.getText();
+                String tipo = "";
+                if (futBtn.isSelected()) tipo = "Fútbol";
+                else if (basquetBtn.isSelected()) tipo = "Baloncesto";
+                else if (tenisBtn.isSelected()) tipo = "Tenis";
+
                 Integer numero = Integer.parseInt(numeroField.getText());
                 Integer capacidad = Integer.parseInt(capacidadField.getText());
                 Integer costo = Integer.parseInt(costoField.getText());
 
                 controlador.agregarCancha(tipo, numero, capacidad, costo);
-                break;
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Error: ingrese valores numéricos válidos.");
-                continue;
             }
-        }else {
-                break;
-            }
-        }
+        } else{
+            break;
+        }}
     }
 
     public static void agregarReserva(){
