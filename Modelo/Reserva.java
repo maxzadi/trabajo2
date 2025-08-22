@@ -1,4 +1,5 @@
 package Modelo;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
@@ -17,7 +18,15 @@ public class Reserva {
         this.fechaFin = fechaFin;
     }
 
-    public String info(){
-        return "";
+    public String[] info(){
+        String[] datos= new String[5];
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+        datos[0] = responsable;
+        datos[1] = nombre;
+        datos[2] = tipo;
+        datos[3] = formato.format(fechaInicio);
+        datos[4] = formato.format(fechaFin);
+
+        return datos;
     }
 }

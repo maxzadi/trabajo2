@@ -4,8 +4,9 @@ import java.awt.*;
 import javafx.scene.text.Font;
 
 import Modelo.Cancha;
-import java.util.ArrayList;
+import Modelo.Reserva;
 
+import java.util.ArrayList;
 
 
 public class Main {
@@ -82,7 +83,7 @@ public class Main {
             panel.add(costoField);
 
             int result = JOptionPane.showConfirmDialog(null, panel,
-                    "Cancha " + i, JOptionPane.OK_CANCEL_OPTION);
+                    "Cancha ", JOptionPane.OK_CANCEL_OPTION);
 
             if (result == JOptionPane.OK_OPTION) {
                 try {
@@ -117,7 +118,41 @@ public class Main {
     }
 
     public static void agregarCancha(){
+        while(true){
+        JTextField tipoField = new JTextField();
+        JTextField numeroField = new JTextField();
+        JTextField capacidadField = new JTextField();
+        JTextField costoField = new JTextField();
 
+        JPanel panel = new JPanel(new GridLayout(4, 2, 5, 5));
+        panel.add(new JLabel("Tipo:"));
+        panel.add(tipoField);
+        panel.add(new JLabel("Número:"));
+        panel.add(numeroField);
+        panel.add(new JLabel("Capacidad:"));
+        panel.add(capacidadField);
+        panel.add(new JLabel("Costo:"));
+        panel.add(costoField);
+
+        int result = JOptionPane.showConfirmDialog(null, panel,
+                "Cancha ", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            try {
+                String tipo = tipoField.getText();
+                Integer numero = Integer.parseInt(numeroField.getText());
+                Integer capacidad = Integer.parseInt(capacidadField.getText());
+                Integer costo = Integer.parseInt(costoField.getText());
+
+                controlador.agregarCancha(tipo, numero, capacidad, costo);
+                break;
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Error: ingrese valores numéricos válidos.");
+                continue;
+            }
+        }else {
+                break;
+            }
+        }
     }
 
     public static void agregarReserva(){
@@ -125,7 +160,19 @@ public class Main {
     }
 
     public static String verCancha(){
-        return null;
+        StringBuilder sb = new StringBuilder();
+        sb.append(controlador.verCancha("fut")).append("\n");
+        sb.append(controlador.verCancha("tenis")).append("\n");
+        sb.append(controlador.verCancha("basquet")).append("\n");
+
+        JTextArea textArea = new JTextArea(sb.toString());
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(600, 500));
+
+        JOptionPane.showMessageDialog(frame, scrollPane, "Todas las Canchas y Reservas", JOptionPane.INFORMATION_MESSAGE);
+
+        return sb.toString();
     }
 
     public static String verListaEspera(){
