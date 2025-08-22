@@ -20,16 +20,13 @@ public class ComplejoDeportivo {
         switch (tipo) {
         case "Fútbol":
             canchasFut.add(cancha);
-            System.out.println(canchasFut);
             break;
         case "Baloncesto":
             canchasBasket.add(cancha);
-            System.out.println(canchasBasket);
 
             break;
         case "Tenis":
             canchasTenis.add(cancha);
-            System.out.println(canchasTenis);
             break;
     }
     }
