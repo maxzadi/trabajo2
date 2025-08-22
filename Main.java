@@ -66,7 +66,7 @@ public class Main {
         int[] capacidades = new int[4];
         int[] costos = new int[4];
 
-        for (int i = 1; i <= 1; i++) {
+        for (int i = 1; i <= 4; i++) {
             JRadioButton futBtn = new JRadioButton("Fútbol");
             JRadioButton basquetBtn = new JRadioButton("Baloncesto");
             JRadioButton tenisBtn = new JRadioButton("Tenis");
@@ -131,9 +131,9 @@ public class Main {
         }
 
         controlador.agregarCancha(tipos[0],numeros.get(0),capacidades[0],costos[0]);
-        //controlador.agregarCancha(tipos[1],numeros.get(1),capacidades[1],costos[1]);
-        //controlador.agregarCancha(tipos[2],numeros.get(2),capacidades[2],costos[2]);
-        //controlador.agregarCancha(tipos[3],numeros.get(3),capacidades[3],costos[3]);
+        controlador.agregarCancha(tipos[1],numeros.get(1),capacidades[1],costos[1]);
+        controlador.agregarCancha(tipos[2],numeros.get(2),capacidades[2],costos[2]);
+        controlador.agregarCancha(tipos[3],numeros.get(3),capacidades[3],costos[3]);
     }
 
     public static void agregarCancha(){
@@ -185,6 +185,7 @@ public class Main {
                 Integer costo = Integer.parseInt(costoField.getText());
 
                 controlador.agregarCancha(tipo, numero, capacidad, costo);
+                break;
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Error: ingrese valores numéricos válidos.");
             }
@@ -199,9 +200,9 @@ public class Main {
 
     public static String verCancha(){
         StringBuilder sb = new StringBuilder();
-        sb.append(controlador.verCancha("fut")).append("\n");
-        sb.append(controlador.verCancha("tenis")).append("\n");
-        sb.append(controlador.verCancha("basquet")).append("\n");
+        sb.append(controlador.verCancha("Fútbol")).append("\n");
+        sb.append(controlador.verCancha("Tenis")).append("\n");
+        sb.append(controlador.verCancha("Baloncesto")).append("\n");
 
         JTextArea textArea = new JTextArea(sb.toString());
         textArea.setEditable(false);
