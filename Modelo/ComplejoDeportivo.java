@@ -1,5 +1,6 @@
 package Modelo;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ComplejoDeportivo {
     public static ArrayList<Cancha> canchasFut;
@@ -33,16 +34,52 @@ public class ComplejoDeportivo {
     }
     }
 
-    public void reservar(Reserva reserva, Boolean espera){
+    public boolean reservar(Reserva reserva, double deposito, int participantes){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(reserva.fechaInicio);
+        int horaInicio = cal.get(Calendar.HOUR_OF_DAY);
+        cal.setTime(reserva.fechaFin);
+        int horaFin = cal.get(Calendar.HOUR_OF_DAY);
+        if (horaInicio < 6 || horaFin > 22) return false;
 
-    }
+        if (deposito <= 0) return false;
 
-    public Boolean validarReserva(){
-        return null;
+        ArrayList<Cancha> todasCanchas = new ArrayList<>();
+        todasCanchas.addAll(canchasFut);
+        todasCanchas.addAll(canchasBasket);
+        todasCanchas.addAll(canchasTenis);
+
+        for (Cancha c : todasCanchas) {
+            if (participantes <= Integer.parseInt(c.info()[2])) {
+                c.reservar(reserva); 
+                return true;
+            }
+        }
+
+        lista.agregar(reserva);
+        return false;
     }
 
     public String verListaEspera(){
-        return null;
+        StringBuilder sb = new StringBuilder();
+        ArrayList<Reserva> listaReservas = lista.obtener();
+        sb.append("========= Lista de Espera =========\n\n");
+
+        if (listaReservas.isEmpty()) sb.append("No hay reservas en espera.\n");
+        else {
+            int i = 1;
+            for (Reserva r : listaReservas) {
+                String[] datos = r.info();
+                sb.append("Reserva ").append(i++).append("\n");
+                sb.append("Encargado: ").append(datos[0]).append("\n");
+                sb.append("Nombre: ").append(datos[1]).append("\n");
+                sb.append("Tipo: ").append(datos[2]).append("\n");
+                sb.append("Fecha inicio: ").append(datos[3]).append("\n");
+                sb.append("Fecha fin: ").append(datos[4]).append("\n");
+                sb.append("-----------------------------------\n");
+            }
+        }
+        return sb.toString();
     }
 
     public static ArrayList<Cancha> getCanchaTipo(String tipo){

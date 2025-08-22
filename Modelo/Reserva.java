@@ -7,8 +7,8 @@ public class Reserva {
     private String responsable;
     private String nombre;
     private String tipo;
-    private Date fechaInicio;
-    private Date fechaFin;
+    public Date fechaInicio;
+    public Date fechaFin;
 
     public Reserva(String responsable, String nombre, String tipo, Date fechaInicio, Date fechaFin){
         this.responsable = responsable;

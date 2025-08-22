@@ -9,14 +9,16 @@ public class ListaEspera {
     }
 
     public void agregar(Reserva reserva){
-
+        reservas.add(reserva);
     }
 
     public void quitar(Integer posicion){
-
+        if(posicion >=0 && posicion < reservas.size()){
+                    reservas.remove((int)posicion);
+        }
     }
 
     public ArrayList<Reserva> obtener(){
-        return null;
+        return reservas;
     }
 }

@@ -1,6 +1,8 @@
 import java.util.Date;
 import javax.swing.*;
 import java.awt.*;
+import java.text.SimpleDateFormat;
+
 import javafx.scene.text.Font;
 
 import Modelo.Cancha;
@@ -194,9 +196,81 @@ public class Main {
         }}
     }
 
-    public static void agregarReserva(){
+    public static void agregarReserva() {
+    JTextField responsableField = new JTextField();
+    JTextField nombreField = new JTextField();
+    JRadioButton entrenamientoBtn = new JRadioButton("Entrenamiento");
+    JRadioButton campeonatoBtn = new JRadioButton("Campeonato");
+    JRadioButton amistosoBtn = new JRadioButton("Amistoso");
+    ButtonGroup tipoEventoGroup = new ButtonGroup();
+    tipoEventoGroup.add(entrenamientoBtn);
+    tipoEventoGroup.add(campeonatoBtn);
+    tipoEventoGroup.add(amistosoBtn);
+    entrenamientoBtn.setSelected(true);
 
+    JTextField fechaInicioField = new JTextField("dd/MM/yyyy HH:mm");
+    JTextField fechaFinField = new JTextField("dd/MM/yyyy HH:mm");
+    JTextField participantesField = new JTextField();
+    JTextField depositoField = new JTextField();
+
+    JPanel panel = new JPanel(new GridLayout(8, 2, 5, 5));
+    panel.add(new JLabel("Responsable:"));
+    panel.add(responsableField);
+    panel.add(new JLabel("Nombre del evento:"));
+    panel.add(nombreField);
+    panel.add(new JLabel("Tipo de evento:"));
+    JPanel tipoPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+    tipoPanel.add(entrenamientoBtn);
+    tipoPanel.add(campeonatoBtn);
+    tipoPanel.add(amistosoBtn);
+    panel.add(tipoPanel);
+    panel.add(new JLabel("Fecha inicio (dd/MM/yyyy HH:mm):"));
+    panel.add(fechaInicioField);
+    panel.add(new JLabel("Fecha fin (dd/MM/yyyy HH:mm):"));
+    panel.add(fechaFinField);
+    panel.add(new JLabel("Cantidad participantes:"));
+    panel.add(participantesField);
+    panel.add(new JLabel("Depósito:"));
+    panel.add(depositoField);
+
+    int result = JOptionPane.showConfirmDialog(frame, panel, "Nueva Reserva", JOptionPane.OK_CANCEL_OPTION);
+
+    if (result == JOptionPane.OK_OPTION) {
+        try {
+            String responsable = responsableField.getText();
+            String nombre = nombreField.getText();
+            String tipoEvento = entrenamientoBtn.isSelected() ? "Entrenamiento" :
+                                campeonatoBtn.isSelected() ? "Campeonato" : "Amistoso";
+
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Date fechaInicio = formato.parse(fechaInicioField.getText());
+            Date fechaFin = formato.parse(fechaFinField.getText());
+
+            int participantes = Integer.parseInt(participantesField.getText());
+            double deposito = Double.parseDouble(depositoField.getText());
+
+            // Validaciones
+            if (!controlador.validarHorario(fechaInicio, fechaFin)) {
+                JOptionPane.showMessageDialog(frame, "Horario no permitido. Debe estar entre 6:00 y 22:00.");
+                return;
+            }
+            if (deposito <= 0) {
+                JOptionPane.showMessageDialog(frame, "Depósito insuficiente.");
+                return;
+            }
+
+            boolean asignada = controlador.agregarReserva(responsable, nombre, tipoEvento, fechaInicio, fechaFin, participantes, deposito);
+            if (!asignada) {
+                JOptionPane.showMessageDialog(frame, "No hay cancha disponible. Se ha agregado a la lista de espera.");
+            } else {
+                JOptionPane.showMessageDialog(frame, "Reserva realizada con éxito.");
+            }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(frame, "Error en los datos ingresados: " + e.getMessage());
+        }
     }
+}
 
     public static String verCancha(){
         StringBuilder sb = new StringBuilder();
@@ -214,7 +288,12 @@ public class Main {
         return sb.toString();
     }
 
-    public static String verListaEspera(){
-        return null;
+    public static void verListaEspera(){
+        String texto = controlador.verListaEspera();
+        JTextArea textArea = new JTextArea(texto);
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(500, 400));
+        JOptionPane.showMessageDialog(frame, scrollPane, "Lista de Espera", JOptionPane.INFORMATION_MESSAGE);
     }
 }
